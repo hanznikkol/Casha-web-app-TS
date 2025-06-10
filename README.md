@@ -52,7 +52,3 @@ export default tseslint.config({
   },
 })
 ```
-=======
-# Casha-web-app-TS
-Web Financial Tracker
->>>>>>> 5a2d90c7f45f48a61625f21ecc0d58ed508ca0d6
