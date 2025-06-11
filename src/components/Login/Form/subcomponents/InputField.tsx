@@ -29,7 +29,7 @@ const InputField: React.FC<InputFieldProps> = ({
             name = {name}
             placeholder= {placeholder}
             type= {type} 
-            className='text-sm lg:text-base w-full border border-gray-400 rounded-xl px-2 py-3 lg:py-4 mb-2'
+            className='text-sm lg:text-base w-full border border-gray-400 rounded-xl px-2 py-3 mb-2'
             onChange = {onChange}
         ></input>
 

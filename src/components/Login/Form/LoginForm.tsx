@@ -1,17 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import CloseSVG from '../../icons/LoginIcons/CloseSVG.js'
 import GoogleButton from './subcomponents/GoogleButton.js'
 import InputField from './subcomponents/InputField.js'
-
+import FormAlert from './subcomponents/FormAlert.js'
 
 function LoginForm() {
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
-  const [error, setError] = React.useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
   const navigate = useNavigate()
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLElement>) => {
     e.preventDefault()
 
     if (email === "hanz@gmail.com" && password === "1234") {
@@ -33,19 +32,18 @@ function LoginForm() {
     <>
       {/* Text */}
       <h1 className='text-4xl text-primary font-archivo'>Casha</h1>
-      <h4 className='text-xl lg:text-3xl'>Login to Continue!</h4>
+      <h4 className='text-xl lg:text-3xl mb-4'>Login to Continue!</h4>
 
       {/* Form */}
       <form onSubmit = {handleSubmit} className='flex flex-col gap-6 w-full h-auto px-2 lg:px-16'>
         {/* Error Message */}
         {error && (
-          <div className='w-full px-2 py-3 flex justify-between items-center border-2 border-error rounded-xl'>
-            <p className='text-error'>Oops! {error}</p>
-            <button onClick={handleErrorClose}>
-              <CloseSVG></CloseSVG>
-            </button>
-            
-          </div>
+          <FormAlert 
+            message= {error}
+            type = 'error'
+            onClose={handleErrorClose}
+            >
+          </FormAlert>
         )}
 
         <div>
@@ -68,6 +66,7 @@ function LoginForm() {
           <p className='underline text-secondary hover:text-secondary-hover hover:cursor-pointer'>Forget Password</p>
         </div>
         
+        {/* Submit Button */}
         <button type='submit' className='hover:cursor-pointer bg-primary hover:bg-primary-hover text-white p-3 rounded-xl duration-150'>Login</button>
 
         <div className='flex justify-around items-center gap-4 px-16'>
