@@ -1,33 +1,46 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import GoogleButton from './subcomponents/GoogleButton.js'
-import InputField from './subcomponents/InputField.js'
-import FormAlert from './subcomponents/FormAlert.js'
+import GoogleButton from './partials/GoogleButton.js'
+import InputField from './partials/InputField.js'
+import FormAlert from './partials/FormAlert.js'
+import { supabase } from '../../lib/supabase'
 
 function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const navigate = useNavigate()
 
-  const handleSubmit = (e: React.FormEvent<HTMLElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLElement>) => {
     e.preventDefault()
+    try {
+      const {data, error} = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password: password
+      })
 
-    if (email === "hanz@gmail.com" && password === "1234") {
-      navigate('/dashboard')
-      setEmail('')
-      setPassword('')
+      if (error) {
+        setError(error.message)
+        setSuccess('')
+        return
+      }
+
+      setSuccess('Login Successfully')
+      console.log(success)
+      setError('');
+      navigate('/dashboard'); // or your destination
+    } catch (err: any) {
+      console.error('Unexpected error:', err);
+      setError('Something went wrong. Please try again.');
     }
-    else {
-      setError("Invalid Email or Password");
-    }
+    
   }
   
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)
-  
   const handleErrorClose = () => setError('')
-
+  
   return (
     <>
       {/* Text */}
@@ -81,7 +94,7 @@ function LoginForm() {
         {/* Navigate to Register */}
         <div className='flex gap-2 flex-wrap justify-center'>
           <p className='text-sm lg:text-base'>Don't have an account yet?</p>
-          <p className='text-secondary  underline  text-sm lg:text-base duration-150 hover:text-secondary-hover hover:cursor-pointer'> <Link to="/signup">Create an account</Link> </p>
+          <p className='text-secondary  underline  text-sm lg:text-base duration-150 hover:text-secondary-hover hover:cursor-pointer'> <Link to = '/signup' >Create an account</Link> </p>
         </div>
         
       </form>

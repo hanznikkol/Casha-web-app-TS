@@ -1,5 +1,5 @@
 import React from 'react'
-import CloseSVG from '../../../icons/LoginIcons/CloseSVG'
+import CloseSVG from '../../icons/authIcons/CloseSVG'
 
 interface AlertProps {
     message: string,

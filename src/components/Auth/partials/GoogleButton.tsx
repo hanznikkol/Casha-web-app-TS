@@ -1,5 +1,5 @@
 import React from 'react'
-import GoogleSVG from '../../../icons/LoginIcons/GoogleSVG'
+import GoogleSVG from '../../icons/authIcons/GoogleSVG'
 
 interface GoogleButtonProps {
     firstText: string

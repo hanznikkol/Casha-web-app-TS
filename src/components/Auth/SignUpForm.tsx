@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import GoogleButton from './subcomponents/GoogleButton'
-import InputField from './subcomponents/InputField'
-import FormAlert from './subcomponents/FormAlert'
+import GoogleButton from './partials/GoogleButton'
+import InputField from './partials/InputField'
+import FormAlert from './partials/FormAlert'
+import { supabase } from '../../lib/supabase'
 
 function SignUpForm() {
   const [username, setUserName] = useState('')
@@ -20,7 +21,7 @@ function SignUpForm() {
   
   const handleErrorClose = () => setError('')
 
-  const handleRegister = async (e: React.ChangeEvent<HTMLFormElement>) => {
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (password != cPassword) {
@@ -28,25 +29,52 @@ function SignUpForm() {
       setSuccess('')
       return
     }
-
-    // Simulate registration success
+    
     try {
+      const {data , error} = await supabase.auth.signUp({
+        email: email.trim(),
+        password: password
+      })
+
+      if (error) {
+        setError(error.message)
+        setSuccess('')
+        return
+      }
+
+      const userID = data.user?.id
+
+      if (!userID) {
+        setError('User ID not returned from Supabase.')
+        setSuccess('')
+        return
+      }
+
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert([{ user_id: userID, username: username.trim()}])
+
+      if (profileError) {
+        setError(profileError.message)
+        setSuccess('')
+        return
+      }
+
       setSuccess('Registration successful! Redirecting you to the login page...')
       setError('')
-      setTimeout(() => {
-        navigate('/')
-      }, 3000)
-    } 
+      setTimeout(() => navigate('/'), 2500)
+      //Reset
+      setUserName('')
+      setEmail('')
+      setPassword('')
+      setCPassword('')
+    }
+
     catch (err){
       setError("Something went wrong.");
       setSuccess("");
     }
-
-    // Reset form fields
-    setUserName('')
-    setEmail('')
-    setPassword('')
-    setCPassword('')
+    
   }
 
   return (
