@@ -62,7 +62,7 @@ function SignUpForm() {
 
       setSuccess('Registration successful! Redirecting you to the login page...')
       setError('')
-      setTimeout(() => navigate('/'), 2500)
+      setTimeout(() => navigate('/login'), 2500)
       //Reset
       setUserName('')
       setEmail('')

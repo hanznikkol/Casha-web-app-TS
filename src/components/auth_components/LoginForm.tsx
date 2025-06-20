@@ -29,7 +29,7 @@ function LoginForm() {
       setSuccess('Login Successfully')
       console.log(success)
       setError('');
-      navigate('/dashboard'); // or your destination
+      navigate('/overview'); // or your destination
     } catch (err: any) {
       console.error('Unexpected error:', err);
       setError('Something went wrong. Please try again.');
