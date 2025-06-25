@@ -21,7 +21,7 @@ function Main() {
       </div>
       {/* Main */}
       <div className='h-full flex-1 bg-off-white'>
-
+        
       </div>
     </div>
     </>    
