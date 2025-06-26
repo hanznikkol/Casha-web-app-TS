@@ -1,33 +1,40 @@
-import OverviewSVG from "../../icons/nav_icons/OverviewSVG"
-import TransactionSVG from "../../icons/nav_icons/TransactionSVG";
-import BudgetSVG from "../../icons/nav_icons/BudgetSVG";
-
+import { BiReceipt } from "react-icons/bi";
+import { TbPigMoney, TbCategoryPlus, TbLayoutDashboard } from "react-icons/tb";
+import { NavLink } from "react-router-dom";
 function SideNav() {
   
   type NavItem = {
     label: string;
-    icon: React.ReactNode;
+    icon: React.ElementType;
+    href: string;
   };
 
   const navItems: NavItem[] = [
-    {label: "Overview", icon: <OverviewSVG></OverviewSVG>},
-    {label: "Transactions", icon: <TransactionSVG></TransactionSVG>},
-    {label: "Budgets", icon: <BudgetSVG></BudgetSVG>},
-    {label: "Categories", icon: <OverviewSVG></OverviewSVG>}
+    {label: "Overview", icon: TbLayoutDashboard, href: "/"},
+    {label: "Transactions", icon: BiReceipt, href: "/transaction"},
+    {label: "Budgets", icon: TbPigMoney, href: "/budgets"},
+    {label: "Categories", icon: TbCategoryPlus, href: "/categories"}
     
   ]
   return (
     <>
       <ul className='flex flex-col gap-4'>  
         {navItems.map((item, index) => (
-          <li 
+          <NavLink 
             key={index}
-            className="flex gap-2 items-center bg-gray-200 w-full p-3 rounded-lg hover:cursor-pointer">
-
-            {item.icon}
-            <h1>{item.label}</h1>
-
-          </li>
+            to={item.href}
+            className= {
+              ({isActive}) => `flex gap-2 items-center w-full rounded-lg p-3 hover:cursor-pointer duration-100 ${
+                isActive? 'bg-primary text-white ' : 'bg-white text-black'
+              }`
+            }>
+            {({isActive}) => (
+              <>
+                <item.icon className={`w-6 h-6 ${ isActive ? 'text-white' : 'text-black'} group-hover:text-white duration-100`} />
+                <h1>{item.label}</h1>
+              </>
+            )}
+          </NavLink>
         ))}
       </ul>
     </>

@@ -3,6 +3,9 @@ import Login from './pages/auth_page/Login'
 import Register from './pages/auth_page/Register'
 import MainLayout from './pages/main/MainLayout'
 import Overview from './pages/main/Overview'
+import Transaction from './pages/main/Transaction'
+import Budgets from './pages/main/Budgets'
+import Categories from './pages/main/Categories'
 
 function App() {
 
@@ -16,7 +19,10 @@ function App() {
 
             {/* Main Pages */}
             <Route path='/' element={<MainLayout></MainLayout>}>
-              <Route index path='overview' element={<Overview></Overview>}></Route>
+              <Route index element={<Overview></Overview>}></Route>
+              <Route path='transaction' element={<Transaction></Transaction>}></Route>
+              <Route path='budgets' element={<Budgets></Budgets>}></Route>
+              <Route path='categories' element={<Categories></Categories>}></Route>
             </Route>
             
           </Routes> 

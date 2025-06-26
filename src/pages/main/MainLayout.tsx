@@ -1,3 +1,4 @@
+import { Outlet } from 'react-router-dom'
 import SideNav from '../../components/main_components/navigation/SideNav'
 
 function Main() {
@@ -5,7 +6,7 @@ function Main() {
     <>
     <div className='w-full min-h-screen flex justify-center items-center'>
       {/* Side Nav */}
-      <div className='w-[12%] h-full flex flex-col justify-between border-r p-4 border-r-gray-200 text-black  bg-[#fcfcfc]'>
+      <div className='w-[14%] h-full flex flex-col justify-between border-r p-4 border-r-gray-200 text-black  bg-[#fcfcfc]'>
         {/* Top */}
         <div className='gap-6 flex flex-col'>
           <div className='w-full text-center'>
@@ -20,8 +21,8 @@ function Main() {
         </div>
       </div>
       {/* Main */}
-      <div className='h-full flex-1 bg-off-white'>
-        
+      <div className='h-full w-full bg-off-white'>
+        <Outlet/>
       </div>
     </div>
     </>    
