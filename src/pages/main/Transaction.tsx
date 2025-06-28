@@ -2,7 +2,11 @@ import React from 'react'
 
 function Transaction() {
   return (
-    <div>Transaction</div>
+    <>
+      <div className='w-full h-full'>
+        <h1 className='text-2xl'>Transaction</h1>
+      </div>
+    </>
   )
 }
 

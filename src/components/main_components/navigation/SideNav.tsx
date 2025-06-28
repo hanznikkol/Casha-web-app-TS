@@ -1,8 +1,12 @@
 import { BiReceipt } from "react-icons/bi";
-import { TbPigMoney, TbCategoryPlus, TbLayoutDashboard } from "react-icons/tb";
+import { TbPigMoney, TbLayoutDashboard } from "react-icons/tb";
 import { NavLink } from "react-router-dom";
-function SideNav() {
-  
+
+type SideNavProp = {
+  isCollapsed: boolean;
+}
+function SideNav({isCollapsed}: SideNavProp) {
+
   type NavItem = {
     label: string;
     icon: React.ElementType;
@@ -13,8 +17,6 @@ function SideNav() {
     {label: "Overview", icon: TbLayoutDashboard, href: "/"},
     {label: "Transactions", icon: BiReceipt, href: "/transaction"},
     {label: "Budgets", icon: TbPigMoney, href: "/budgets"},
-    {label: "Categories", icon: TbCategoryPlus, href: "/categories"}
-    
   ]
   return (
     <>
@@ -24,14 +26,14 @@ function SideNav() {
             key={index}
             to={item.href}
             className= {
-              ({isActive}) => `flex gap-2 items-center w-full rounded-lg p-3 hover:cursor-pointer duration-100 ${
-                isActive? 'bg-primary text-white ' : 'bg-white text-black'
+              ({isActive}) => `flex ${isCollapsed? 'justify-center': 'gap-2'} items-center w-full rounded-lg p-3 hover:cursor-pointer duration-100 ${
+                isActive? 'bg-primary text-[#fcfcfc] ' : 'bg-[#fcfcfc] text-black'
               }`
             }>
             {({isActive}) => (
               <>
-                <item.icon className={`w-6 h-6 ${ isActive ? 'text-white' : 'text-black'} group-hover:text-white duration-100`} />
-                <h1>{item.label}</h1>
+                <item.icon className={`w-6 h-6 ${ isActive ? 'text-[#fcfcfc]' : 'text-black'} group-hover:text-[#fcfcfc] duration-100`} />
+                {!isCollapsed && <p>{item.label}</p>}
               </>
             )}
           </NavLink>

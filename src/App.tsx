@@ -5,7 +5,7 @@ import MainLayout from './pages/main/MainLayout'
 import Overview from './pages/main/Overview'
 import Transaction from './pages/main/Transaction'
 import Budgets from './pages/main/Budgets'
-import Categories from './pages/main/Categories'
+import Profile from './pages/auth_page/Profile'
 
 function App() {
 
@@ -22,7 +22,7 @@ function App() {
               <Route index element={<Overview></Overview>}></Route>
               <Route path='transaction' element={<Transaction></Transaction>}></Route>
               <Route path='budgets' element={<Budgets></Budgets>}></Route>
-              <Route path='categories' element={<Categories></Categories>}></Route>
+              <Route path='profile' element={<Profile></Profile>}></Route>
             </Route>
             
           </Routes> 
