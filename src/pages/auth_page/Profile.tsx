@@ -2,7 +2,9 @@ import React from 'react'
 
 function Profile() {
   return (
-    <div>Profile</div>
+    <div className=''>
+      <h1 className='text-2xl'>Profile</h1>
+    </div>
   )
 }
 

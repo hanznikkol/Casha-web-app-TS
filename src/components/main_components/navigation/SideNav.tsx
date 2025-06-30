@@ -1,5 +1,5 @@
 import { BiReceipt } from "react-icons/bi";
-import { TbPigMoney, TbLayoutDashboard } from "react-icons/tb";
+import { TbPigMoney, TbLayoutDashboard, TbChartPie } from "react-icons/tb";
 import { NavLink } from "react-router-dom";
 
 type SideNavProp = {
@@ -16,7 +16,8 @@ function SideNav({isCollapsed}: SideNavProp) {
   const navItems: NavItem[] = [
     {label: "Overview", icon: TbLayoutDashboard, href: "/"},
     {label: "Transactions", icon: BiReceipt, href: "/transaction"},
-    {label: "Budgets", icon: TbPigMoney, href: "/budgets"},
+    {label: "Budgets", icon: TbChartPie, href: "/budgets"},
+    {label: "Goals", icon: TbPigMoney, href: "/goals"},
   ]
   return (
     <>
@@ -26,7 +27,7 @@ function SideNav({isCollapsed}: SideNavProp) {
             key={index}
             to={item.href}
             className= {
-              ({isActive}) => `flex ${isCollapsed? 'justify-center': 'gap-2'} items-center w-full rounded-lg p-3 hover:cursor-pointer duration-100 ${
+              ({isActive}) => `flex ${isCollapsed? 'justify-center': 'w-full gap-2'} items-center w-full rounded-lg p-3 hover:cursor-pointer duration-100 ${
                 isActive? 'bg-primary text-[#fcfcfc] ' : 'bg-[#fcfcfc] text-black'
               }`
             }>
