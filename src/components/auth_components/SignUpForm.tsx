@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import GoogleButton from './partials/GoogleButton'
 import InputField from './partials/InputField'
 import FormAlert from './partials/FormAlert'
 import { supabase } from '../../lib/supabase'
+import { Button } from '../ui/button'
 
 function SignUpForm() {
   const [username, setUserName] = useState('')
@@ -70,7 +72,7 @@ function SignUpForm() {
       setCPassword('')
     }
 
-    catch (err){
+    catch (err: unknown){
       setError("Something went wrong.");
       setSuccess("");
     }
@@ -79,8 +81,8 @@ function SignUpForm() {
 
   return (
     <>
-      <h1 className='text-4xl text-primary font-archivo'>Casha</h1>
-      <h4 className='text-xl lg:text-3xl mb-4'>Fill up to Continue!</h4>
+      <h4 className='text-2xl lg:text-3xl mb-4 font-bold'>Create an Account</h4>
+      <p className='text-base lg:text-lg text-muted-foreground mb-4'>Enter your credentials below to create your account</p>
       
       <form onSubmit={handleRegister} className='flex flex-col gap-6 w-full h-auto px-2 lg:px-16'>
         {/* Error Message */}
@@ -99,44 +101,43 @@ function SignUpForm() {
           ></FormAlert>
         )}
 
-        <div>
+        <div className='space-y-2'>
           <InputField
             type="text"
-            label= "Username"
+            placeholder='Username'
             required = {true}
-            onChange={onChangeUsername}
-          ></InputField>
+            onChange={onChangeUsername}></InputField>
           <InputField
             type="email"
-            label= "Email"
+            placeholder='name@example.com'
             required = {true}
             onChange={onChangeEmail}></InputField>
           <InputField
             type="password"
-            label= "Password"
+            placeholder='Password'
             required = {true}
             onChange={onChangePassword}></InputField>
           <InputField
             type="password"
-            label= "Confirm Password"
+            placeholder='Confirm Password'
             required = {true}
             onChange={onChangeCPassword}></InputField>
         </div>
         
         {/* Submit Button */}
-        <button type='submit' className='hover:cursor-pointer bg-primary text-white p-3 rounded-xl'>Register</button>
+        <Button type='submit' className='hover:cursor-pointer bg-primary text-white shadow-xl'>Create Account</Button>
 
-        <div className='flex justify-around items-center gap-4 px-16'>
-          <div className='w-full h-0.5 bg-gray-300'></div>
-            <p className='text-gray-500'>or</p>
-          <div className='w-full h-0.5 bg-gray-300'></div> 
+        <div className='flex justify-around items-center gap-4 text-muted-foreground text-sm lg:text-base'>
+          <div className='w-full h-0.5 bg-muted-foreground'></div>
+            <p className='text-nowrap'>OR CONTINUE WITH</p>
+          <div className='w-full h-0.5 bg-muted-foreground'></div> 
         </div>
 
-        <GoogleButton firstText={'Sign Up'}></GoogleButton>
+        <GoogleButton firstText={'Sign up'}></GoogleButton>
         
         <div className='flex gap-2 flex-wrap justify-center'>
-          <p className='text-sm lg:text-base'>Already have an account?</p>
-          <p className='text-secondary underline hover:cursor-pointer text-sm lg:text-base'> <Link to="/">Login</Link> </p>
+          <p className='text-sm lg:text-base text-muted-foreground'>Already have an account?</p>
+          <p className='underline hover:cursor-pointer text-sm lg:text-base text-muted-foreground font-bold hover:text-secondary-hover'> <Link to="/login">Login</Link> </p>
         </div>
 
       </form>
