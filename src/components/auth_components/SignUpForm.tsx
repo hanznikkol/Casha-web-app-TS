@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import GoogleButton from './partials/GoogleButton'
-import InputField from './partials/InputField'
-import FormAlert from './partials/FormAlert'
+import GoogleButton from './sub_components/GoogleButton'
+import InputField from './sub_components/InputField'
+import FormAlert from './sub_components/FormAlert'
 import { supabase } from '../../lib/supabase'
 import { Button } from '../ui/button'
 
@@ -82,7 +82,7 @@ function SignUpForm() {
   return (
     <>
       <h4 className='text-2xl lg:text-3xl mb-4 font-bold'>Create an Account</h4>
-      <p className='text-base lg:text-lg text-muted-foreground mb-4'>Enter your credentials below to create your account</p>
+      <p className='text-base text-muted-foreground mb-4'>Enter your credentials below to create your account</p>
       
       <form onSubmit={handleRegister} className='flex flex-col gap-6 w-full h-auto px-2 lg:px-16'>
         {/* Error Message */}
@@ -127,7 +127,7 @@ function SignUpForm() {
         {/* Submit Button */}
         <Button type='submit' className='hover:cursor-pointer bg-primary text-white shadow-xl'>Create Account</Button>
 
-        <div className='flex justify-around items-center gap-4 text-muted-foreground text-sm lg:text-base'>
+        <div className='flex justify-around items-center gap-4 text-muted-foreground text-sm '>
           <div className='w-full h-0.5 bg-muted-foreground'></div>
             <p className='text-nowrap'>OR CONTINUE WITH</p>
           <div className='w-full h-0.5 bg-muted-foreground'></div> 
@@ -136,8 +136,8 @@ function SignUpForm() {
         <GoogleButton firstText={'Sign up'}></GoogleButton>
         
         <div className='flex gap-2 flex-wrap justify-center'>
-          <p className='text-sm lg:text-base text-muted-foreground'>Already have an account?</p>
-          <p className='underline hover:cursor-pointer text-sm lg:text-base text-muted-foreground font-bold hover:text-secondary-hover'> <Link to="/login">Login</Link> </p>
+          <p className='text-sm text-muted-foreground'>Already have an account?</p>
+          <p className='underline hover:cursor-pointer text-sm text-muted-foreground font-bold hover:text-destructive duration-150'> <Link to="/login">Login</Link> </p>
         </div>
 
       </form>

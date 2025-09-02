@@ -10,7 +10,7 @@ const GoogleButton: React.FC<GoogleButtonProps> = ({
     firstText
 }) => {
   return (
-    <Button className='bg-white shadow-xl text-black border flex justify-center items-center gap-2 hover:cursor-pointer hover:bg-muted duration-150'>
+    <Button className='bg-secondary shadow-xl text-black border flex justify-center items-center gap-2 hover:cursor-pointer hover:bg-accent duration-200'>
         <GoogleSVG></GoogleSVG>
         {firstText} with Google
     </Button>

@@ -14,6 +14,7 @@ function Login() {
               <LoginForm />
             </div>
         </div>
+        
         {/* Design */}
         <div className=' hidden lg:flex flex-1 flex-col h-full justify-center items-center text-center text-white gap-2'>
         </div>

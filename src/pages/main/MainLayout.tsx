@@ -1,63 +1,120 @@
-import { useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
-import SideNav from '../../components/main_components/navigation/SideNav'
-import { TbUser } from 'react-icons/tb'
+import { 
+  Sidebar, 
+  SidebarContent, 
+  SidebarFooter, 
+  SidebarGroup, 
+  SidebarGroupContent, 
+  SidebarHeader, 
+  SidebarMenu, 
+  SidebarMenuButton,
+  SidebarMenuItem, 
+  SidebarProvider,
+  SidebarTrigger,
+  useSidebar} from '@/components/ui/sidebar'
+import {
+  LayoutDashboard,
+  Receipt,
+  PieChart,
+  PiggyBank,
+  User,
+  Wallet,
+} from "lucide-react"
+
+
+function AppHeader() {
+  const { open } = useSidebar()
+
+  return (
+    <div className="flex items-center justify-center w-full">
+      <Wallet className="w-6 h-6 text-primary" />
+      {open && <span className="ml-2 text-xl font-bold flex-1">Casha</span>}
+      <SidebarTrigger className="ml-auto shrink-0" />
+    </div>
+  )
+}
 
 function Main() {
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const navItems = [
+    { label: "Overview", icon: LayoutDashboard, href: "/" },
+    { label: "Transactions", icon: Receipt, href: "/transaction" },
+    { label: "Budgets", icon: PieChart, href: "/budgets" },
+    { label: "Goals", icon: PiggyBank, href: "/goals" },
+  ]
 
   return (
     <>
     <div className='w-full min-h-screen flex justify-center items-center'>
-      {/* Side Container */}
-      <div className={`h-full flex flex-col justify-between border-r border-r-gray-200 text-black bg-[#fcfcfc] duration-100 
-        ${isCollapsed ? 'w-[4%] px-2 py-4': 'w-[14%] p-4'}`}>
-        
-        {/* Top List*/}
-        <div className={`flex flex-col gap-6 w-full ${isCollapsed ? 'items-center' : ''}`}>
-          {/* Collapse Button */}
-          <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="w-12 h-12 rounded-lg bg-gray-200 flex justify-center items-center text-lg self-center"
-          >
-            {isCollapsed ? '>' : '<'}
-          </button>
-      
-          {/* App Name */}
-            {!isCollapsed && (
-              <div className="w-full text-center">
-                <h1 className='text-3xl font-archivo text-primary'>Casha</h1>
-              </div>
-            )}
+      <SidebarProvider>
+        <Sidebar collapsible='icon'>
+          <SidebarHeader className='p-4'>
+            <AppHeader />
+          </SidebarHeader>
 
-          {/* Side Nav */}
-          <SideNav isCollapsed = {isCollapsed}></SideNav>
-        </div>
-        
-        {/* Bottom List */}
-        <div className={`flex flex-col gap-6 w-full ${isCollapsed? 'items-center' : ''}`}>
-          <ul className='flex flex-col gap-4'>
-            <NavLink to={'/profile'}  
-             className= {({isActive}) => `flex ${isCollapsed? 'justify-center': 'gap-2'} items-center w-full rounded-lg p-3 hover:cursor-pointer duration-100 
-             ${isActive? 'bg-primary text-[#fcfcfc] ' : 'bg-[#fcfcfc] text-black'}`}>
-        
-              {({isActive}) => (
-              <>
-                <TbUser className={`w-6 h-6 
-                ${ isActive ? 'text-[#fcfcfc]' : 'text-black'} group-hover:text-[#fcfcfc] duration-100`} />
-                {!isCollapsed && <p>Profile</p>}
-              </>
-              )}
-          </NavLink>
-          </ul>
-        </div>
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {navItems.map((item, i) => (
+                    <SidebarMenuItem key={i}>
+                      <NavLink to={item.href}>
+                        {({ isActive }) => (
+                          <SidebarMenuButton
+                            isActive={isActive}
+                            className="
+                              data-[active=true]:bg-primary
+                              data-[active=true]:text-white
+                              data-[active=true]:hover:bg-primary/90
+                              hover:bg-accent
+                              hover:text-foreground"
+                          >
+                            <item.icon
+                              className={`w-5 h-5 ${
+                                isActive ? "text-white" : "text-foreground"
+                              }`}
+                            />
+                            <span>{item.label}</span>
+                          </SidebarMenuButton>
+                        )}
+                      </NavLink>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </SidebarContent>
 
-      </div>
+
+          {/* Footer */}
+          <SidebarFooter>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <NavLink to="/profile">
+                  {({ isActive }) => (
+                    <SidebarMenuButton isActive={isActive}
+                      className="
+                              data-[active=true]:bg-primary
+                              data-[active=true]:text-white
+                              data-[active=true]:hover:bg-primary/90
+                              hover:bg-accent
+                              hover:text-foreground"
+                    >
+                      <User className="w-5 h-5" />
+                      <span>Profile</span>
+                    </SidebarMenuButton>
+                  )}
+                </NavLink>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarFooter>
+
+        </Sidebar>
+      </SidebarProvider>
       
       {/* Main Container*/}
-      <div className='h-full w-full bg-off-white p-8'>
+      <main className='h-full w-full bg-off-white p-8'>
         <Outlet/>
-      </div>
+      </main>
       
     </div>
     </>    
