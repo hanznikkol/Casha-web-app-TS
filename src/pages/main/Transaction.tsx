@@ -1,10 +1,14 @@
-import React from 'react'
+import AddTransactionDialogBox from "@/components/pages_components/Transaction/AddTransactionDialogBox"
 
 function Transaction() {
   return (
     <>
-      <div className='w-full h-full'>
-        <h1 className='text-2xl'>Transaction</h1>
+      <div className='w-full h-full flex-col'>
+        <div className='flex items-center justify-between'> 
+          {/* Header */}
+          <h1 className='text-2xl'>Transaction</h1>
+          <AddTransactionDialogBox/> 
+        </div>
       </div>
     </>
   )
