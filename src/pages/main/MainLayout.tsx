@@ -4,6 +4,7 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar'
 import SideBarNav from '@/components/main_components/SideBarNav'
+import { Toaster } from 'sonner'
 
 function Main() {
   
@@ -28,7 +29,7 @@ function Main() {
             <Outlet/>
           </main>
         </div>
-
+        <Toaster position="top-right" richColors />
       </SidebarProvider>
 
     </div>

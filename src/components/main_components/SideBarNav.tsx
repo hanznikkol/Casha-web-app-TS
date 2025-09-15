@@ -1,5 +1,13 @@
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar'
-import { Goal, LayoutDashboard, LogOut, Map, PieChart, Receipt } from 'lucide-react'
+import { Sidebar, 
+  SidebarContent, 
+  SidebarFooter, 
+  SidebarGroup, 
+  SidebarGroupContent, 
+  SidebarHeader, 
+  SidebarMenu, 
+  SidebarMenuButton, 
+  SidebarMenuItem } from '../ui/sidebar'
+import { Goal, LayoutDashboard, LogOut, Map, PieChart, Receipt, UserPen } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import AppHeader from './AppHeader'
 import { supabase } from '@/lib/supabase'
@@ -19,6 +27,7 @@ const handleLogout = async() => {
 
 const navItems = [
     { label: "Overview", icon: LayoutDashboard, href: "/" },
+    { label: "Accounts", icon: UserPen, href:"/accounts"},
     { label: "Transactions", icon: Receipt, href: "/transaction" },
     { label: "Budget", icon: Map, href: "/budget" },
     { label: "Goals", icon: Goal, href: "/goals" },

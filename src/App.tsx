@@ -8,6 +8,7 @@ import Budget from './pages/main/Budget'
 import Goals from './pages/main/Goals'
 import Reports from './pages/main/Reports'
 import LandingPage from './pages/Landing'
+import Accounts from './pages/main/Accounts'
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
               <Route path='budget' element={<Budget></Budget>}></Route>
               <Route path='goals' element={<Goals></Goals>}></Route>
               <Route path='reports' element={<Reports></Reports>}></Route>
+              <Route path='accounts' element={<Accounts></Accounts>}></Route>
             </Route>
             
           </Routes> 
