@@ -7,7 +7,7 @@ function Transaction() {
         <div className='flex items-center justify-between'> 
           {/* Header */}
           <h1 className='text-2xl'>Transaction</h1>
-          <AddTransactionDialogBox/> 
+          <AddTransactionDialogBox onAdded={() => {}}/> 
         </div>
       </div>
     </>

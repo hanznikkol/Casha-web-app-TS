@@ -10,29 +10,43 @@ import { toast } from "sonner";
 
 type AddAccountDialogProps = {
     onAdded?: () => void
+    open?: boolean
+    onOpenChange?: (open: boolean) => void
+    withTrigger?: boolean
 }
 
-export default function AddAccountDialogBox({ onAdded }: AddAccountDialogProps) {
+export default function AddAccountDialogBox({ onAdded, open, onOpenChange, withTrigger = true }: AddAccountDialogProps) {
 
 const [form, setForm] = useState({ 
     account_name: "", 
-    account_type: "", 
-    balance: 0 
+    account_type: "wallet", 
+    balance: ""
 })
 
-const handleAddAccount = async () => {
-
+const handleSubmit = async () => {
     const {data: {user}} = await supabase.auth.getUser()
     if (!user) {
         toast.error("You must be logged in to add an account")
         return
     }
 
+    const accountName = form.account_name.trim()
+    if (!accountName) {
+        toast.error("Account name is required")
+        return
+    }
+
+    const balanceValue = form.balance === "" ? 0 : Number(form.balance)
+    if (isNaN(balanceValue)) {
+        toast.error("Starting balance is required and must be a number")
+        return
+    }
+
     const { error } = await supabase.from('accounts').insert([
         {
-        account_name: form.account_name,
+        account_name: accountName,
         account_type: form.account_type,
-        balance: form.balance,
+        balance: balanceValue,
         user_id: user.id,
       }
     ])
@@ -40,23 +54,28 @@ const handleAddAccount = async () => {
     if (error) {
       toast.error(`Failed to add account: ${error.message}`)
       console.error("Add account error:", error)
-    } else {
+    } 
+    else {
       toast.success(`Account "${form.account_name}" created successfully!`)
-      setForm({ account_name: "", account_type: "wallet", balance: 0 })
+      setForm({ account_name: "", account_type: "wallet", balance: "" })
       onAdded?.()
+      onOpenChange?.(false)
     }
 }
 
 return(
     <>
-        <Dialog>
-            <DialogTrigger>
-                 <Button className="hover:cursor-pointer duration-100">
-                    <Plus/>
-                    Add Account
-                </Button>
-            </DialogTrigger>
-
+        <Dialog open={open} onOpenChange={onOpenChange}>
+            {withTrigger && (
+                <DialogTrigger>
+                    <Button className="hover:cursor-pointer duration-100">
+                        <Plus/>
+                        Add Account
+                    </Button>
+                </DialogTrigger>
+            )
+            }
+            
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle className="text-2xl font-bold">Add Account</DialogTitle>
@@ -78,41 +97,43 @@ return(
                     <div className="grid gap-2">
                         <Label>Account Type</Label>
                         <RadioGroup
-                        defaultValue="wallet"
-                        onValueChange={(val) => setForm({ ...form, account_type: val })}
-                        className="flex gap-4"
+                            defaultValue="wallet"
+                            onValueChange={(val) => setForm({ ...form, account_type: val })}
+                            className="flex gap-4"
                         >
-                        <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="wallet" id="wallet" />
-                            <Label htmlFor="wallet">Wallet</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="bank" id="bank" />
-                            <Label htmlFor="bank">Bank</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="cash" id="cash" />
-                            <Label htmlFor="cash">Cash</Label>
-                        </div>
+                            <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="wallet" id="wallet" />
+                                <Label htmlFor="wallet">Wallet</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="bank" id="bank" />
+                                <Label htmlFor="bank">Bank</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="cash" id="cash" />
+                                <Label htmlFor="cash">Cash</Label>
+                            </div>
                         </RadioGroup>
                     </div>
 
                     <div className="grid gap-2">
                         <Label htmlFor="balance">Starting Balance</Label>
                         <Input
-                        id="balance"
-                        type="number"
-                        value={form.balance}
-                        onChange={(e) => setForm({ ...form, balance: Number(e.target.value) })}
+                            id="balance"
+                            type="number"
+                            placeholder="0"
+                            value={form.balance}
+                            onChange={(e) => setForm({ ...form, balance: e.target.value})}
                         />
                     </div>
                 </div>
 
                 <DialogFooter>
-                    <Button type="submit" onClick={handleAddAccount} className="hover:cursor-pointer">Save</Button>
+                    <Button type="submit" onClick={handleSubmit} className="hover:cursor-pointer">Save</Button>
                 </DialogFooter>
             </DialogContent>
             
+        
         </Dialog>
     </>
 )

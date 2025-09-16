@@ -31,7 +31,7 @@ function LoginForm() {
       setSuccess('Login Successfully')
       console.log(success)
       setError('');
-      navigate('/overview'); // or your destination
+      navigate('/'); // or your destination
     } catch (err: unknown) {
       console.error('Unexpected error:', err);
       setError('Something went wrong. Please try again.');

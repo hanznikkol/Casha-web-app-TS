@@ -8,7 +8,7 @@ function Accounts() {
         <div className='flex items-center justify-between'> 
           {/* Header */}
           <h1 className='text-2xl'>Accounts</h1>
-          <AddAccountDialogBox/>
+          <AddAccountDialogBox onAdded={() => {}}/>
         </div>
       </div>
     </>
