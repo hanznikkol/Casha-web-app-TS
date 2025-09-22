@@ -14,6 +14,11 @@ type AddTransactionModalProps = {
   onAdded?: () => void
 }
 
+type Category = {
+  category_id: string
+  name: string
+  type: 'income' | 'expense'
+}
 type Account = {
   account_id: string
   account_name: string
@@ -30,23 +35,27 @@ const [form, setForm] = useState({
 })  
 
 const [accounts, setAccounts] = useState<Account[]>([])
+const [categories, setCategories] = useState<Category[]>([])
 const [openAccountDialog, setOpenAccountDialog] = useState(false)
 
 const fetchAccounts = async () => {
     const {data, error} = await supabase.from('accounts').select("account_id, account_name")
+    if(error) toast.error("Failed to load accounts")
+    else setAccounts(data || [])
+}
 
-    if(error) {
-        toast.error("Failed to load accounts")
-    } 
-    else {
-        setAccounts(data || [])
-    }
+const fetchCategories = async () => {
+    const {data: {user}, error: userError} = await supabase.auth.getUser()
+    if(!user) toast.error("User not logged in")
+    const { data, error } = await supabase.from('categories').select('category_id, name, type').eq('user_id', user?.id)
+    if (error) toast.error("Failed to load categories")
+    else setCategories(data || [])
 }
 
 useEffect(() => {
     fetchAccounts()
+    fetchCategories()
 }, [])
-
 
 const handleSubmit = async () => {
     if (!form.account_id) {
@@ -153,13 +162,27 @@ const handleSubmit = async () => {
                 {/* Category */}
                 <div className="grid gap-2">
                     <Label htmlFor="category">Category</Label>
-                    <Input
-                    id="category"
-                    placeholder="Food, Bills, Transport..."
-                    value={form.category}
-                    onChange={(e) => setForm({ ...form, category: e.target.value })}
-                    />
+                    <Select
+                        value={form.category}
+                        onValueChange={(val) => setForm({...form, category: val})}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select Category"></SelectValue>
+                        </SelectTrigger>
+
+                        <SelectContent>
+                            {categories
+                                .filter(cat => cat.type === form.type)
+                                .map(cat => (
+                                    <SelectItem key={cat.category_id} value={cat.name}>
+                                        {cat.name}
+                                    </SelectItem>
+                                ))
+                            }
+                        </SelectContent>
+                    </Select>
                 </div>
+                
                 {/* Description */}
                 <div className="grid gap-2">
                     <Label htmlFor="description">Description</Label>

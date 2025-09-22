@@ -40,7 +40,7 @@ function AccountCards({ account_name, account_type, balance, onEdit,}: AccountCa
             <Pencil className="w-4 h-4 text-gray-600 hover:text-primary" />
           </button>
           {/* Delete */}
-          <button  onClick={() => {}} className="p-1 rounded hover:bg-gray-100 hover:cursor-pointer">
+          <button  onClick={() => {console.log("Add function later on")}} className="p-1 rounded hover:bg-gray-100 hover:cursor-pointer">
             <Trash className="w-4 h-4 text-gray-600 hover:text-destructive" />
           </button>
       </div>

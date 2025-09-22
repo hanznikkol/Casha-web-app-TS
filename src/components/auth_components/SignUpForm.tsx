@@ -6,6 +6,7 @@ import InputField from './sub_components/InputField'
 import FormAlert from './sub_components/FormAlert'
 import { supabase } from '../../lib/supabase'
 import { Button } from '../ui/button'
+import { addDefaultCategories } from '@/lib/userSetup'
 
 function SignUpForm() {
   const [username, setUserName] = useState('')
@@ -15,66 +16,43 @@ function SignUpForm() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const navigate = useNavigate()
-
-  const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => setUserName(e.target.value)
-  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)
-  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)
-  const onChangeCPassword = (e: React.ChangeEvent<HTMLInputElement>) => setCPassword(e.target.value)
   
-  const handleErrorClose = () => setError('')
+  const resetForm = () => {
+    setUserName('')
+    setEmail('')
+    setPassword('')
+    setCPassword('')
+  }
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
-    if (password != cPassword) {
-      setError('Your Password is not match')
-      setSuccess('')
-      return
-    }
+    setError('')
+    setSuccess('')
+     
+    if (password !== cPassword) return setError('Passwords do not match')
     
     try {
       const {data , error} = await supabase.auth.signUp({
         email: email.trim(),
         password: password
       })
-
-      if (error) {
-        setError(error.message)
-        setSuccess('')
-        return
-      }
+      if (error || !data.user) throw new Error(error?.message || 'User ID not returned')
 
       const userID = data.user?.id
 
-      if (!userID) {
-        setError('User ID not returned from Supabase.')
-        setSuccess('')
-        return
-      }
-
+      // Create profile + default categories
       const { error: profileError } = await supabase
         .from('profiles')
-        .insert([{ user_id: userID, username: username.trim()}])
+        .insert([{ user_id: userID, username: username.trim() }])
+      if (profileError) throw new Error(profileError.message)
 
-      if (profileError) {
-        setError(profileError.message)
-        setSuccess('')
-        return
-      }
+      await addDefaultCategories(userID)
 
-      setSuccess('Registration successful! Redirecting you to the login page...')
-      setError('')
-      setTimeout(() => navigate('/login'), 2500)
-      //Reset
-      setUserName('')
-      setEmail('')
-      setPassword('')
-      setCPassword('')
-    }
-
-    catch (err: unknown){
-      setError("Something went wrong.");
-      setSuccess("");
+      setSuccess('Registration successful! Redirecting...')
+      resetForm()
+      setTimeout(() => navigate('/login'), 2000)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Something went wrong')
     }
     
   }
@@ -84,62 +62,31 @@ function SignUpForm() {
       <h4 className='text-2xl lg:text-3xl mb-4 font-bold'>Create an Account</h4>
       <p className='text-base text-muted-foreground mb-4'>Enter your credentials below to create your account</p>
       
-      <form onSubmit={handleRegister} className='flex flex-col gap-6 w-full h-auto px-2 lg:px-16'>
-        {/* Error Message */}
-        {error && (
-          <FormAlert
-            type='error'
-            message = {error}
-            onClose={handleErrorClose}
-          ></FormAlert>
-        )}
-        {/* Error Message */}
-        {success && (
-          <FormAlert
-            type='success'
-            message = {success}
-          ></FormAlert>
-        )}
+       <form onSubmit={handleRegister} className='flex flex-col gap-6 w-full h-auto px-2 lg:px-16'>
+        {error && <FormAlert type='error' message={error} onClose={() => setError('')} />}
+        {success && <FormAlert type='success' message={success} />}
 
         <div className='space-y-2'>
-          <InputField
-            type="text"
-            placeholder='Username'
-            required = {true}
-            onChange={onChangeUsername}></InputField>
-          <InputField
-            type="email"
-            placeholder='name@example.com'
-            required = {true}
-            onChange={onChangeEmail}></InputField>
-          <InputField
-            type="password"
-            placeholder='Password'
-            required = {true}
-            onChange={onChangePassword}></InputField>
-          <InputField
-            type="password"
-            placeholder='Confirm Password'
-            required = {true}
-            onChange={onChangeCPassword}></InputField>
+          <InputField type='text' placeholder='Username' required onChange={e => setUserName(e.target.value)} />
+          <InputField type='email' placeholder='name@example.com' required onChange={e => setEmail(e.target.value)} />
+          <InputField type='password' placeholder='Password' required onChange={e => setPassword(e.target.value)} />
+          <InputField type='password' placeholder='Confirm Password' required onChange={e => setCPassword(e.target.value)} />
         </div>
-        
-        {/* Submit Button */}
+
         <Button type='submit' className='hover:cursor-pointer bg-primary text-white shadow-xl'>Create Account</Button>
 
-        <div className='flex justify-around items-center gap-4 text-muted-foreground text-sm '>
+        <div className='flex justify-around items-center gap-4 text-muted-foreground text-sm'>
           <div className='w-full h-0.5 bg-muted-foreground'></div>
-            <p className='text-nowrap'>OR CONTINUE WITH</p>
-          <div className='w-full h-0.5 bg-muted-foreground'></div> 
+          <p className='text-nowrap'>OR CONTINUE WITH</p>
+          <div className='w-full h-0.5 bg-muted-foreground'></div>
         </div>
 
-        <GoogleButton firstText={'Sign up'}></GoogleButton>
-        
+        <GoogleButton firstText='Sign up' />
+
         <div className='flex gap-2 flex-wrap justify-center'>
           <p className='text-sm text-muted-foreground'>Already have an account?</p>
-          <p className='underline hover:cursor-pointer text-sm text-muted-foreground font-bold hover:text-destructive duration-150'> <Link to="/login">Login</Link> </p>
+          <Link className='underline font-bold text-sm text-muted-foreground hover:text-destructive duration-150' to="/login">Login</Link>
         </div>
-
       </form>
     </>
   )

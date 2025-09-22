@@ -32,7 +32,6 @@ export default function Accounts() {
         <div className='flex items-center justify-between mb-4'> 
           {/* Header */}
           <h1 className='text-2xl font-bold text-foreground'>Accounts</h1>
-          {/* <AddAccountDialogBox onAdded={() => {}} withTrigger/> */}
         </div>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 '>
 
